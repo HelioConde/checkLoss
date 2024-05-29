@@ -1,17 +1,32 @@
-[
-  {
-    "id": 1,
-    "username": "HelioConde",
-    "password": "HelioConde"
-  },
-  {
-    "id": 2,
-    "username": "User1",
-    "password": "Password1"
-  },
-  {
-    "id": 3,
-    "username": "User2",
-    "password": "Password2"
-  }
-]
+{
+  "Login": [
+    {
+      "id": 1,
+      "username": "HelioConde",
+      "password": "HelioConde"
+    },
+    {
+      "id": 2,
+      "username": "Teste1",
+      "password": "Password1"
+    },
+    {
+      "id": 3,
+      "username": "Teste2",
+      "password": "Password2"
+    }
+  ],
+  "Produtos": [
+    {
+      "id": "16951",
+      "codigo": "132291",
+      "nome": "ARRUELA VELUMOIDE PEGADOR - N 43",
+      "codigo_barras": "132291",
+      "fornecedor_Padrao": "TOTAL SERV",
+      "setor": "MATERIAL CONSTRUCAO",
+      "grupo": "DIVERSOS",
+      "subgrupo": null,
+      "perda_ou_troca": "0"
+    }
+  ]
+}
