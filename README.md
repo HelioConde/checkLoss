@@ -1,24 +1,36 @@
-# checkLoss — arquivo de dados / experimento
+<div align="center">
+  <h1>📉 checkLoss</h1>
+  <p><strong>Experimento histórico reservado à organização de dados e estudos de perdas.</strong></p>
+  <p><img alt="Status" src="https://img.shields.io/badge/status-esqueleto%20de%20projeto-64748b"></p>
+</div>
 
-**Repositório pequeno usado para armazenar dados de um experimento de análise de perdas.**
+## Estado real do repositório
 
-## Conteúdo
+O **checkLoss** contém apenas dois arquivos:
 
-| Arquivo | Finalidade |
+| Arquivo | Estado |
 | --- | --- |
-| `data.json` | Dados estruturados presentes no repositório |
-| `README.md` | Apresentação e observações |
+| `README.md` | Apresentação e planejamento |
+| `data.json` | **Vazio**, sem registros ou esquema JSON disponível nesta revisão |
 
-## Como explorar
+**Não há aplicação, análise de perdas executável, painel, parser, API ou estrutura de dados implementada para demonstrar.** O nome representa a ideia original, não um sistema pronto.
 
-Abra o arquivo `data.json` para conhecer sua estrutura. O repositório **não inclui, nesta revisão, um aplicativo executável, scripts de instalação ou pipeline de análise documentados**.
+## Possível objetivo futuro
 
-## Próximos passos sugeridos
+Explorar dados de perdas do varejo e criar uma forma confiável de diferenciar **valor**, **quantidade**, **período**, **setor**, **loja** e **motivo**, sem confundir números provenientes de diferentes origens.
 
-- Documentar a origem, o significado e a data de atualização dos dados.
-- Criar um dicionário de campos e um exemplo fictício.
-- Adicionar scripts ou testes caso o experimento volte a ser desenvolvido.
+### Antes de programar
 
-> Evite publicar dados pessoais ou internos de operação sem autorização. Use exemplos anonimizados para demonstrações.
+1. Definir se o projeto será um leitor de relatórios ou uma aplicação de gestão.
+2. Especificar um **esquema JSON fictício**, com nome, tipo e unidade de cada campo.
+3. Criar uma importação com validação e mensagens para arquivos vazios.
+4. Usar exemplos sintéticos para desenvolver relatórios e testes.
+5. Estabelecer controles de privacidade antes de conectar fontes reais.
 
-Mantido por [Hélio Conde](https://github.com/HelioConde).
+## Projetos relacionados
+
+[**Painel de Gestão**](https://github.com/HelioConde/Painel-de-gest-o) documenta uma abordagem mais ampla para indicadores e automação no varejo.
+
+> **Privacidade:** não envie vendas, perdas, dados internos de lojas ou informações pessoais ao repositório público sem autorização.
+
+Projeto de estudo de [Hélio Conde](https://github.com/HelioConde).
