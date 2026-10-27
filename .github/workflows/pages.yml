@@ -1,69 +1,61 @@
-name: CheckLoss QA e GitHub Pages
+name: checkLoss - QA Playwright e GitHub Pages
 on:
   push:
     branches: [main]
-    paths:
-      - "index.html"
-      - "styles.css"
-      - "app.js"
-      - "sample-data.json"
-      - "favicon.svg"
-      - "package.json"
-      - "playwright.config.cjs"
-      - "tests/**"
-      - ".github/workflows/pages.yml"
   pull_request:
+    branches: [main]
   workflow_dispatch:
 permissions:
   contents: read
-  pages: write
-  id-token: write
 concurrency:
-  group: "checkloss-pages-${{ github.ref }}"
-  cancel-in-progress: true
+  group: checkloss-${{ github.ref }}
+  cancel-in-progress: false
 jobs:
-  test:
+  qa:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: "22"
-      - name: Instalar dependencias de QA
+          node-version: '22'
+      - name: Validar sintaxe
+        run: node --check app.js
+      - name: Instalar Playwright
         run: npm install --no-audit --no-fund
-      - name: Preparar Chromium
+      - name: Instalar navegador Chromium
         run: npx playwright install --with-deps chromium
-      - name: Testes desktop e mobile
-        run: npm test
-      - name: Capturas e relatorio
+      - name: Testar CRUD, armazenamento, visual e JS
+        run: npm run qa
+      - name: Salvar capturas
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: checkloss-playwright
-          path: |
-            test-results/
-            playwright-report/
+          name: checkloss-visual-${{ github.run_id }}
+          path: screenshots/
           if-no-files-found: ignore
-          retention-days: 14
   deploy:
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
-    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: qa
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deploy.outputs.page_url }}
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     steps:
       - uses: actions/checkout@v4
-      - name: Preparar arquivos estaticos
+      - name: Preparar apenas arquivos publicos estaticos
         run: |
-          mkdir -p _site
-          cp index.html styles.css app.js sample-data.json favicon.svg .nojekyll _site/
+          mkdir -p dist-pages
+          cp index.html styles.css app.js favicon.svg dist-pages/
       - uses: actions/configure-pages@v5
         with:
           enablement: true
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v4
         with:
-          path: _site
-      - id: deployment
+          path: dist-pages
+      - id: deploy
         uses: actions/deploy-pages@v4

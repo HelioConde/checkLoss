@@ -1,13 +1,12 @@
 {
-  "name": "checkloss",
-  "version": "1.0.0",
+  "name": "checkloss-pages",
   "private": true,
-  "description": "Painel de perdas estatico e local para GitHub Pages",
+  "version": "1.0.0",
+  "description": "Dashboard offline de perdas ficticias",
   "scripts": {
-    "test": "playwright test",
-    "test:ui": "playwright test --ui"
+    "qa": "node tests/qa.cjs"
   },
   "devDependencies": {
-    "@playwright/test": "^1.55.0"
+    "playwright": "1.58.2"
   }
 }
