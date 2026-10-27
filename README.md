@@ -6,7 +6,7 @@ Experimento de análise de perdas para navegador, sem login, PHP, banco de dados
 - GitHub Pages (após habilitação da publicação): https://helioconde.github.io/checkLoss/
 - Local: execute `python -m http.server 4173` na raiz e abra `http://localhost:4173`.
 
-**Estado da publicação em 27/10/2026:** o código e o QA passaram, mas a etapa `actions/configure-pages` falhou porque a integração não conseguiu criar o Pages. Veja [docs/PAGES_SETUP.md](docs/PAGES_SETUP.md) para habilitar em Settings → Pages → GitHub Actions. O workflow agora informa o bloqueio, mantém os testes e só tenta publicar quando a configuração existe.
+**Estado da publicação em 27/10/2026:** os testes QA passaram. A criação inicial do Pages falhou por permissões da integração; a ativação do serviço ainda precisa ser confirmada. Além do workflow, existe agora a branch **`gh-pages` com somente seis arquivos estáticos**. Publique em Settings → Pages → Deploy from a branch → `gh-pages` → `/(root)` ou use GitHub Actions depois de habilitar Pages. O nome da branch não equivale a site publicado.
 
 ## Funcionalidades
 - Indicadores de valor total, quantidade, ocorrências e setores.
