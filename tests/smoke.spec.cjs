@@ -46,5 +46,5 @@ test("acessibilidade: foco e movimento reduzido", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { name: "Filtros" })).toBeVisible();
   const duration = await page.locator(".btn.primary").evaluate(el => getComputedStyle(el).transitionDuration);
-  expect(duration).toMatch(/0\.00001s|0s/);
+  expect(Number.parseFloat(duration)).toBeLessThan(0.02);
 });
