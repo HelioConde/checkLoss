@@ -128,7 +128,12 @@ function renderTable(records) {
   }
 }
 function render() {
-  displayed = filterRows();
+  const { from, to } = currentFilters();
+  const invalidRange = Boolean(from && to && from > to);
+  $("dateRangeError").hidden = !invalidRange;
+  $("fromDate").setAttribute("aria-invalid", String(invalidRange));
+  $("toDate").setAttribute("aria-invalid", String(invalidRange));
+  displayed = invalidRange ? [] : filterRows();
   const groups = aggregateBySector(displayed);
   renderMetrics(displayed, groups); renderChart(groups); renderInsights(displayed, groups); renderTable(displayed);
   $("exportCsv").disabled = !displayed.length;
