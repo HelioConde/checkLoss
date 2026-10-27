@@ -1,12 +1,12 @@
 # Como publicar checkLoss no GitHub Pages
 
 ## Situação verificada — 27/10/2026
-O workflow `CheckLoss QA e GitHub Pages` passou nos testes do navegador, mas o deploy falhou em `actions/configure-pages@v5` com `Resource not accessible by integration` ao tentar criar um site Pages pela API.
+A configuração inicial do workflow encontrou `Resource not accessible by integration` ao tentar criar Pages, mas a **publicação automática da branch `gh-pages` foi aprovada posteriormente**, na [execução #40481493661](https://github.com/HelioConde/checkLoss/actions/runs/40481493661). O site estático está implantado. Os passos de ativação abaixo ficam como instruções de recuperação ou troca de método.
 
 Esse erro **não indica falha do código da interface**. É necessário que as configurações do GitHub permitam Pages para este repositório; o token automático do Actions não conseguiu criar Pages sozinho.
 
 ## Passos necessários (uma vez só)
-1. Abra **Settings → Pages** do repositório `HelioConde/checkLoss`.
+1. Se precisar refazer a configuração, abra **Settings → Pages** do repositório `HelioConde/checkLoss`.
 2. Em **Build and deployment**, selecione **GitHub Actions**.
 3. Em **Actions**, execute `CheckLoss QA e GitHub Pages` com **Run workflow** (ou envie um novo commit à `main`).
 
@@ -26,7 +26,7 @@ A branch `gh-pages` foi criada como **pacote mínimo e separado** (index.html, s
 1. Entre em **Settings → Pages**.
 2. Escolha **Deploy from a branch**.
 3. Selecione branch **gh-pages** e diretório **/(root)**; salve.
-4. Aguarde a indicação de publicação do próprio GitHub e abra https://helioconde.github.io/checkLoss/.
+4. Confirme a publicação no GitHub e abra https://helioconde.github.io/checkLoss/ — já houve uma implantação bem-sucedida.
 
 A ativação por interface do proprietário pode ser necessária: criar um branch e passar testes não é garantia de implantação. Como `app.js` busca `./sample-data.json`, os caminhos funcionam no prefixo de subpasta `/checkLoss/`. Novas alterações em `main` **não sincronizam automaticamente** com `gh-pages`; a publicação alternativa deve ser atualizada de forma intencional.
 

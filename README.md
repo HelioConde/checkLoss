@@ -3,10 +3,10 @@
 Experimento de análise de perdas para navegador, sem login, PHP, banco de dados ou envio de arquivos a servidores. **Os dados iniciais são fictícios**; este repositório não contém indicadores reais de qualquer loja.
 
 ## Abrir
-- GitHub Pages (após habilitação da publicação): https://helioconde.github.io/checkLoss/
+- GitHub Pages (publicação por branch validada no Actions): https://helioconde.github.io/checkLoss/
 - Local: execute `python -m http.server 4173` na raiz e abra `http://localhost:4173`.
 
-**Estado da publicação em 27/10/2026:** os testes QA passaram. A criação inicial do Pages falhou por permissões da integração; a ativação do serviço ainda precisa ser confirmada. Além do workflow, existe agora a branch **`gh-pages` com somente seis arquivos estáticos**. Publique em Settings → Pages → Deploy from a branch → `gh-pages` → `/(root)` ou use GitHub Actions depois de habilitar Pages. O nome da branch não equivale a site publicado.
+**Estado da publicação em 27/10/2026:** a branch `gh-pages` foi publicada com sucesso pelo GitHub em [Actions #40481493661](https://github.com/HelioConde/checkLoss/actions/runs/40481493661). A demo é estática, sem servidor ou banco. O workflow alternativo de `main` continua disponível para QA e publicação por Actions.
 
 ## Funcionalidades
 - Indicadores de valor total, quantidade, ocorrências e setores.
