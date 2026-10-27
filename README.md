@@ -3,8 +3,10 @@
 Experimento de análise de perdas para navegador, sem login, PHP, banco de dados ou envio de arquivos a servidores. **Os dados iniciais são fictícios**; este repositório não contém indicadores reais de qualquer loja.
 
 ## Abrir
-- GitHub Pages (após ativar Pages → GitHub Actions e concluir o deploy): https://helioconde.github.io/checkLoss/
+- GitHub Pages (após habilitação da publicação): https://helioconde.github.io/checkLoss/
 - Local: execute `python -m http.server 4173` na raiz e abra `http://localhost:4173`.
+
+**Estado da publicação em 27/10/2026:** o código e o QA passaram, mas a etapa `actions/configure-pages` falhou porque a integração não conseguiu criar o Pages. Veja [docs/PAGES_SETUP.md](docs/PAGES_SETUP.md) para habilitar em Settings → Pages → GitHub Actions. O workflow agora informa o bloqueio, mantém os testes e só tenta publicar quando a configuração existe.
 
 ## Funcionalidades
 - Indicadores de valor total, quantidade, ocorrências e setores.
@@ -30,8 +32,8 @@ Campos obrigatórios: `date` (AAAA-MM-DD), `sector` e `reason` (texto), `amount`
 - Esta é uma ferramenta exploratória, **não um sistema de contabilidade ou auditoria oficial**.
 - A soma de quantidades só é apropriada se os registros utilizarem a mesma unidade de medida.
 - O site não transmite arquivos para uma API. O GitHub Pages entrega apenas arquivos estáticos, mas terceiros com acesso ao dispositivo/perfil de navegador podem acessar dados guardados localmente.
-- **Não importe nem publique dados confidenciais de empresa sem autorização.** Se precisar compartilhar análises, remova informações pessoais e sensíveis.
-- `localStorage` pode ser limpo pelo navegador; use a exportação CSV para manter uma cópia dos registros filtrados. CSV não inclui metadados fora dos cinco campos do painel.
+- **Não importe nem publique dados confidenciais de empresa sem autorização.**
+- `localStorage` pode ser limpo pelo navegador; use a exportação CSV para manter uma cópia.
 
 ## Testes
 ```bash
@@ -39,9 +41,10 @@ npm install
 npx playwright install chromium
 npm test
 ```
-Executa validação E2E em Chromium (desktop e mobile), incluindo captura automática de tela, importação, filtros, prevenção de overflow e erros de JavaScript. O workflow `.github/workflows/pages.yml` testa PRs e publica a versão estática após push na `main` caso o Pages esteja configurado para GitHub Actions.
+
+Valida em Chromium desktop/mobile, com capturas, importação, filtros, prevenção de overflow e erros de JavaScript. O workflow testa PRs e publica na `main` depois que Pages está habilitado.
 
 ## Design
-Consulte [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md). Os tokens seguem a ideia de Taste Skill; a semântica, foco e redução de movimento seguem Web Design Guidelines; a composição modular implementa o roteiro de Awesome Design e Image to Code. **Não há dependência de serviços externos para usar o painel.**
+Consulte [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md). Tokens seguem Taste Skill; semântica, foco e redução de movimento seguem Web Design Guidelines; composição modular implementa Awesome Design e Image to Code.
 
 Projeto de estudo de [Hélio Conde](https://github.com/HelioConde).
