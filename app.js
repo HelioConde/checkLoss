@@ -172,7 +172,7 @@ async function importFile(file) {
     resetFilters(); setRows(cleaned, "import", true);
   } catch (e) { showError("Não foi possível importar: " + e.message); }
 }
-$("uploadButton").addEventListener("keydown", event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); $("importFile").click(); } });
+$("uploadButton").addEventListener("click", () => $("importFile").click());
 for (const id of ["sectorFilter", "fromDate", "toDate", "searchText"]) $(id).addEventListener("input", render);
 $("clearFilters").addEventListener("click", () => { resetFilters(); render(); });
 $("exportCsv").addEventListener("click", exportCsv);
