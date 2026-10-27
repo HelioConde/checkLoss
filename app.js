@@ -133,11 +133,17 @@ function render() {
   renderMetrics(displayed, groups); renderChart(groups); renderInsights(displayed, groups); renderTable(displayed);
   $("exportCsv").disabled = !displayed.length;
 }
-function csvEscape(value) { const s = String(value).replace(/"/g, '""'); return '"' + s + '"'; }
+function csvEscape(value, protectFormula = false) {
+  const raw = String(value);
+  // Defende rótulos importados contra interpretação como fórmulas em planilhas.
+  // Valores numéricos e datas permanecem intactos.
+  const safe = protectFormula && /^[\s\x00-\x1f]*[=+@-]/u.test(raw) ? "'" + raw : raw;
+  return '"' + safe.replace(/"/g, '""') + '"';
+}
 function exportCsv() {
   if (!displayed.length) return;
   const header = ["Data", "Setor", "Motivo", "Quantidade", "Valor (BRL)"];
-  const lines = [header, ...displayed.map(r => [r.date, r.sector, r.reason, r.quantity, r.amount.toFixed(2).replace(".", ",")])].map(line => line.map(csvEscape).join(";"));
+  const lines = [header, ...displayed.map(r => [r.date, r.sector, r.reason, r.quantity, r.amount.toFixed(2).replace(".", ",")])].map(line => line.map((field, index) => csvEscape(field, index === 1 || index === 2)).join(";"));
   const url = URL.createObjectURL(new Blob(["\ufeff" + lines.join("\r\n")], { type: "text/csv;charset=utf-8" }));
   const a = document.createElement("a"); a.href = url; a.download = "checkloss-perdas.csv"; document.body.append(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
