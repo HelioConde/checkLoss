@@ -55,3 +55,6 @@ A exportação CSV apresenta textos informados pelo usuário como texto literal 
 
 ## Importação acessível e publicação sem comandos adicionais
 O botão nativo **Importar arquivo JSON** aceita mouse, toque, Enter e Espaço; o seletor de arquivo fica fora da ordem de tabulação para evitar foco duplicado. O Playwright testa as duas teclas nos layouts desktop/mobile. Após o QA da `main`, o workflow sincroniza `index.html`, `app.js`, `styles.css`, `sample-data.json` e `favicon.svg` na `gh-pages` quando esse é o modo de publicação do repositório. Publicações via GitHub Actions continuam suportadas em alternativa, sem credenciais na página e sem banco de dados.
+
+## Filtros de datas
+Data inicial posterior à final apresenta um aviso acessível e desativa a exportação CSV até o período ser corrigido. Limpar filtros restaura os indicadores originais. A interação é coberta por testes Playwright em mobile e desktop.
