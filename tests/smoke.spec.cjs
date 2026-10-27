@@ -48,3 +48,23 @@ test("acessibilidade: foco e movimento reduzido", async ({ page }) => {
   const duration = await page.locator(".btn.primary").evaluate(el => getComputedStyle(el).transitionDuration);
   expect(Number.parseFloat(duration)).toBeLessThan(0.02);
 });
+
+test("exportação CSV trata textos que parecem fórmulas como texto seguro", async ({ page }) => {
+  await page.goto("/");
+  const fixture = [{
+    date: "2026-10-27", sector: "=1+1", reason: "@SUM(1,2)",
+    quantity: 2, amount: 19.99
+  }];
+  await page.locator("#importFile").setInputFiles({
+    name: "formula.json", mimeType: "application/json",
+    buffer: Buffer.from(JSON.stringify(fixture))
+  });
+  await expect(page.locator("#sectorChart")).toContainText("=1+1");
+  const downloadPromise = page.waitForEvent("download");
+  await page.locator("#exportCsv").click();
+  const download = await downloadPromise;
+  const csv = require("node:fs").readFileSync(await download.path(), "utf8");
+  expect(csv).toContain("\"'=1+1\"");
+  expect(csv).toContain("\"'@SUM(1,2)\"");
+  expect(csv).toContain("\"19,99\"");
+});

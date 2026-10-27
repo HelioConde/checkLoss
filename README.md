@@ -48,3 +48,7 @@ Valida em Chromium desktop/mobile, com capturas, importação, filtros, prevenç
 Consulte [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md). Tokens seguem Taste Skill; semântica, foco e redução de movimento seguem Web Design Guidelines; composição modular implementa Awesome Design e Image to Code.
 
 Projeto de estudo de [Hélio Conde](https://github.com/HelioConde).
+
+## Exportação CSV segura
+
+A exportação CSV apresenta textos informados pelo usuário como texto literal em planilhas, prefixando com apóstrofo os campos de setor e motivo que poderiam ser interpretados como fórmulas (`=`, `+`, `-`, `@` após espaços ou controles). O conteúdo original continua visível no painel. Esta proteção reduz o risco de interpretação inesperada por softwares de planilha, mas **não substitui avaliação de segurança ao abrir dados externos**. Os testes Playwright verificam esse comportamento.
