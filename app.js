@@ -108,7 +108,7 @@ function download(name,type,content){
   const url=URL.createObjectURL(new Blob([content],{type})),a=document.createElement("a");
   a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);
 }
-const quote=x=>'"'+String(x??"").replace(/"/g,'""')+'"';
+const quote=x=>{const raw=String(x??"");const safe=/^[=+@\-\t\r]/.test(raw)?"'"+raw:raw;return '"'+safe.replace(/"/g,'""')+'"';};
 function exportCsv(){
   const header=["Data","Setor","Motivo","Quantidade","Valor (BRL)","Observacoes"];
   const lines=[header,...records.map(r=>[r.data,r.setor,r.motivo,r.quantidade,r.valor.toFixed(2),r.observacoes])];
