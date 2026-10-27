@@ -42,7 +42,7 @@ npx playwright install chromium
 npm test
 ```
 
-Valida em Chromium desktop/mobile, com capturas, importação, filtros, prevenção de overflow e erros de JavaScript. O workflow testa PRs e publica na `main` depois que Pages está habilitado.
+Valida em Chromium desktop/mobile, com capturas, importação, filtros, prevenção de overflow e erros de JavaScript. O workflow testa PRs e, após sucesso na `main`, sincroniza automaticamente os cinco arquivos estáticos com a branch `gh-pages` quando ela é a fonte do GitHub Pages. Se Pages estiver em modo GitHub Actions, usa o deploy por artefato. Não há banco ou servidor de aplicação.
 
 ## Design
 Consulte [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md). Tokens seguem Taste Skill; semântica, foco e redução de movimento seguem Web Design Guidelines; composição modular implementa Awesome Design e Image to Code.
@@ -52,3 +52,6 @@ Projeto de estudo de [Hélio Conde](https://github.com/HelioConde).
 ## Exportação CSV segura
 
 A exportação CSV apresenta textos informados pelo usuário como texto literal em planilhas, prefixando com apóstrofo os campos de setor e motivo que poderiam ser interpretados como fórmulas (`=`, `+`, `-`, `@` após espaços ou controles). O conteúdo original continua visível no painel. Esta proteção reduz o risco de interpretação inesperada por softwares de planilha, mas **não substitui avaliação de segurança ao abrir dados externos**. Os testes Playwright verificam esse comportamento.
+
+## Importação acessível e publicação sem comandos adicionais
+O botão nativo **Importar arquivo JSON** aceita mouse, toque, Enter e Espaço; o seletor de arquivo fica fora da ordem de tabulação para evitar foco duplicado. O Playwright testa as duas teclas nos layouts desktop/mobile. Após o QA da `main`, o workflow sincroniza `index.html`, `app.js`, `styles.css`, `sample-data.json` e `favicon.svg` na `gh-pages` quando esse é o modo de publicação do repositório. Publicações via GitHub Actions continuam suportadas em alternativa, sem credenciais na página e sem banco de dados.

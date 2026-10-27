@@ -68,3 +68,33 @@ test("exportação CSV trata textos que parecem fórmulas como texto seguro", as
   expect(csv).toContain("\"'@SUM(1,2)\"");
   expect(csv).toContain("\"19,99\"");
 });
+
+test("importação por teclado funciona com Enter e Espaço sem foco duplicado", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator("#recordCount")).toHaveText("10");
+  const upload = page.getByRole("button", { name: "Importar arquivo JSON" });
+  await upload.focus();
+  await expect(upload).toBeFocused();
+  expect(await page.locator("#importFile").evaluate(input => input.tabIndex)).toBe(-1);
+  const firstPicker = page.waitForEvent("filechooser");
+  await page.keyboard.press("Enter");
+  await (await firstPicker).setFiles({
+    name: "teclado-enter.json",
+    mimeType: "application/json",
+    buffer: Buffer.from(JSON.stringify([{ date: "2026-10-27", sector: "Teclado Enter", reason: "Exemplo", quantity: 2, amount: 15 }]))
+  });
+  await expect(page.locator("#recordCount")).toHaveText("1");
+  await expect(page.locator("#datasetStatus")).toContainText("Dados importados");
+
+  await upload.focus();
+  const secondPicker = page.waitForEvent("filechooser");
+  await page.keyboard.press("Space");
+  await (await secondPicker).setFiles({
+    name: "teclado-espaco.json",
+    mimeType: "application/json",
+    buffer: Buffer.from(JSON.stringify([{ date: "2026-10-27", sector: "Teclado Espaço", reason: "Exemplo", quantity: 1, amount: 29.9 }]))
+  });
+  await expect(page.locator("#recordCount")).toHaveText("1");
+  await expect(page.locator("#sectorChart")).toContainText("Teclado Espaço");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+});

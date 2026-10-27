@@ -27,6 +27,7 @@ jobs:
     timeout-minutes: 15
     outputs:
       pages_enabled: ${{ steps.pages.outputs.enabled }}
+      branch_enabled: ${{ steps.pages.outputs.branch_enabled }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -55,6 +56,13 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           mode="$(gh api "repos/${{ github.repository }}/pages" --jq '.build_type // "legacy"' 2>/dev/null || echo unavailable)"
+          branch="$(gh api "repos/${{ github.repository }}/pages" --jq '.source.branch // ""' 2>/dev/null || true)"
+          if [ "$mode" != "workflow" ] && [ "$branch" = "gh-pages" ]; then
+            echo "branch_enabled=true" >> "$GITHUB_OUTPUT"
+            echo "A branch gh-pages sera sincronizada automaticamente apos o QA." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "branch_enabled=false" >> "$GITHUB_OUTPUT"
+          fi
           if [ "$mode" = "workflow" ]; then
             echo "enabled=true" >> "$GITHUB_OUTPUT"
             echo "Pages configurado para GitHub Actions: publicacao via workflow autorizada." >> "$GITHUB_STEP_SUMMARY"
@@ -82,3 +90,36 @@ jobs:
           path: _site
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  sync_gh_pages:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && needs.test.outputs.branch_enabled == 'true'
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout do código aprovado na main
+        uses: actions/checkout@v4
+        with:
+          path: source
+      - name: Checkout da branch realmente publicada
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: published
+      - name: Sincronizar somente os arquivos estáticos após QA
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp source/index.html source/styles.css source/app.js source/sample-data.json source/favicon.svg published/
+          cd published
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html styles.css app.js sample-data.json favicon.svg
+          if git diff --cached --quiet; then
+            echo "A branch gh-pages ja esta sincronizada." >> "$GITHUB_STEP_SUMMARY"
+          else
+            git commit -m "deploy: atualizar checkLoss a partir da main validada"
+            git push origin HEAD:gh-pages
+            echo "Arquivos aprovados por Playwright publicados na branch gh-pages." >> "$GITHUB_STEP_SUMMARY"
+          fi
