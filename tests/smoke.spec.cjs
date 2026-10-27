@@ -98,3 +98,26 @@ test("importação por teclado funciona com Enter e Espaço sem foco duplicado",
   await expect(page.locator("#sectorChart")).toContainText("Teclado Espaço");
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
 });
+
+test("data inicial maior que a final mostra erro e bloqueia CSV filtrado", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator("#recordCount")).toHaveText("10");
+  await page.locator("#fromDate").fill("2026-10-20");
+  await page.locator("#toDate").fill("2026-10-01");
+  await expect(page.locator("#dateRangeError")).toBeVisible();
+  await expect(page.locator("#dateRangeError")).toContainText("data inicial deve ser anterior");
+  await expect(page.locator("#fromDate")).toHaveAttribute("aria-invalid", "true");
+  await expect(page.locator("#toDate")).toHaveAttribute("aria-invalid", "true");
+  await expect(page.locator("#recordCount")).toHaveText("0");
+  await expect(page.locator("#exportCsv")).toBeDisabled();
+
+  await page.locator("#toDate").fill("2026-10-23");
+  await expect(page.locator("#dateRangeError")).toBeHidden();
+  await expect(page.locator("#fromDate")).toHaveAttribute("aria-invalid", "false");
+  await expect(page.locator("#recordCount")).toHaveText("2");
+  await expect(page.locator("#exportCsv")).toBeEnabled();
+  await page.locator("#clearFilters").click();
+  await expect(page.locator("#recordCount")).toHaveText("10");
+  await expect(page.locator("#dateRangeError")).toBeHidden();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+});

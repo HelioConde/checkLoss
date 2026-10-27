@@ -43,3 +43,6 @@ Cobertura prioritária: rotas estáticas, CSV e JSON, limites de importação, f
 - Importação usa `button` HTML nativo e não mais `label role="button"`, evitando depender de emulação manual de Enter/Espaço. O arquivo permanece ligado ao botão por `aria-controls` e a ajuda por `aria-describedby`.
 - O campo file, acionado pelo botão, usa `tabindex="-1"` para oferecer um único ponto de foco; Playwright testa Enter/Espaço, importação real de JSON, indicadores atualizados e overflow em desktop/mobile.
 - Para GitHub Pages em modo branch `gh-pages`, o workflow só publica assets depois que o QA da `main` conclui com sucesso; o job de sincronização tem permissão limitada de escrita no repositório. Para Pages em modo Actions, a publicação continua pelo job de artefato atual. Não armazenar segredos ou dados reais.
+
+## Feedback de período inválido (27/10/2026)
+O painel explicita quando Data inicial é posterior à Data final com um alerta semântico e bordas de erro nas duas datas (`aria-invalid`). Nessa condição, a tabela e os indicadores deixam de exibir valores enganadores e o CSV é desabilitado. Ao corrigir o período ou clicar em Limpar filtros, os resultados voltam imediatamente. Playwright testa o comportamento no desktop e celular.
